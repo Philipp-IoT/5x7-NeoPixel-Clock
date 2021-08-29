@@ -1,0 +1,49 @@
+#ifndef DRIVER_LED_H
+#define DRIVER_LED_H
+
+#include "Arduino.h"
+#include "Adafruit_NeoPixel.h"
+
+const uint8_t NUMERIC_CHARS[12][5] = {\
+{0x3E, 0x51, 0x49, 0x45, 0x3E}, /* 0 */ \
+{0x00, 0x42, 0x7F, 0x40, 0x00}, /* 1 */ \
+{0x42, 0x61, 0x51, 0x49, 0x46}, /* 2 */ \
+{0x21, 0x41, 0x45, 0x4B, 0x31}, /* 3 */ \
+{0x18, 0x14, 0x12, 0x7F, 0x10}, /* 4 */ \
+{0x27, 0x45, 0x45, 0x45, 0x39}, /* 5 */ \
+{0x3C, 0x4A, 0x49, 0x49, 0x30}, /* 6 */ \
+{0x03, 0x01, 0x71, 0x09, 0x07}, /* 7 */ \
+{0x36, 0x49, 0x49, 0x49, 0x36}, /* 8 */ \
+{0x06, 0x49, 0x49, 0x29, 0x1E},  /* 9 */ \
+{0x00, 0x00, 0x14, 0x00, 0x00},  /* : */ \
+{0x00, 0x00, 0x00, 0x00, 0x00}  /* off */ \
+};
+
+#define LED_MODULE_COUNT 35
+#define LED_TOTAL_COUNT LED_MODULE_COUNT*5
+
+
+#define GRADIENT_MAX (5*5 + 7)
+#define GRADIENT_STEP 1000
+#define GRADIENT_INC 200
+
+class DriverLED {
+
+    private:
+        uint8_t _chars[5];
+        Adafruit_NeoPixel _pixels;
+        uint32_t colorGradient[GRADIENT_MAX];
+        uint32_t gradientOffset;
+        void UpdateColorGradient();
+
+    public:
+        DriverLED(const int pin);
+
+        void Begin();
+
+        void SetChars(uint8_t *chars);
+
+        void UpdateDisplay();
+};
+
+#endif

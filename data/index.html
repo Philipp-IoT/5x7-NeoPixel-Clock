@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="picnic.min.css">
+
+    <title>5x7 LED Clock</title>
+
+    <style>
+
+        body {
+            background-color: #F5F5F5;
+        }
+
+        .main-container>section {
+            width: 90%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 80px 0 0;
+        }
+
+        .card {
+            background-color: #FFF;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="brand">
+            <span>5x7 LED Clock</span>
+        </div>
+
+        <!-- responsive-->
+        <input id="bmenub" type="checkbox" class="show">
+        <label for="bmenub" class="burger button">
+            &#9776;
+        </label>
+
+        <div class="menu">
+            <a href="#" class="button">Status</a>
+            <a href="#" class="button" disabled>Configuration</a>
+        </div>
+    </nav>
+
+    <form action="/submit" method="post">
+
+        <main class="main-container">
+            <section>
+                <h1>Device Status</h1>
+
+                <article class="card">
+                    <header>
+                        <h3>General</h3>
+                    </header>
+                    <footer>
+
+                        <div class="flex two">
+                            <div><span>System Time: </span></div>
+                            <div><span id="sys_time">~TIME~</span></div>
+                        </div>
+
+                    </footer>
+                </article>
+
+                <article class="card">
+                    <header>
+                        <h3>Network</h3>
+                    </header>
+                    <footer>
+
+                        <div class="flex one two-600">
+                            <div><span>WiFi SSID: </span></div>
+                            <div><label><input name="wifi_ssid" type="text" value="~WIFI_SSID~"></label></div>
+
+                            <div><span>WiFi PSK:</span></div>
+                            <div><label><input name="wifi_psk" type="text" value="~WIFI_PSK~"></label></div>
+
+                            <div><span>NTP Server: </span></div>
+                            <div><label><input name="ntp_server" type="text" value="~NTP_SERVER~"></label></div>
+                        </div>
+
+                    </footer>
+                </article>
+
+                <div style="float: right;">
+                    <input type="submit" class='success' value="Submit">
+                    <a href="/"><button class='error'>Cancel</button></a>
+                </div>
+                <div style="clear: both;">&nbsp</div>
+
+
+            </section>
+        </main>
+    </form>
+
+    <script>
+
+        function updateState() {
+            fetch('state.json').then(function (response) {
+                return response.json();
+            }).then(function (array) {
+                document.querySelector('#sys_time').textContent = array['sys_time_str'];
+            });
+        }
+
+        setInterval(updateState, 1000);
+    </script>
+
+</body>
+
+</html>
